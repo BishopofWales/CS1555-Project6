@@ -55,6 +55,7 @@ create table Bidlog (
     constraint Bidlog_PK primary key (bidsn),
     constraint Bidlog_Product_FK foreign key (auction_id) references Product,
     constraint Bidlog_Customer_FK foreign key (bidder) references Customer
+    /*To do, check that the newest added bid is also the largest for its product */
 );
 
 create table Category (
