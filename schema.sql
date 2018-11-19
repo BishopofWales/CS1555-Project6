@@ -71,3 +71,5 @@ create table BelongsTo (
     constraint BelongsTo_Product_FK foreign key (auction_id) references Product,
     constraint BelongsTo_Category_FK foreign key (category) references Category(name)
 );
+
+commit;
