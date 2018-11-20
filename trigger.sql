@@ -61,12 +61,11 @@ CREATE OR REPLACE TRIGGER trig_updateHighBid
 create or replace procedure proc_putProduct(name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as
 v_ID int;
 begin
-    /*TO DO: insert into belongs to table*/
     select max(auction_id) into v_ID
     from Product;
     
     insert into Product values(v_ID+1, name, description, user, sysdate, minprice, number_of_days, 'under auction', null, null, null);
-    
+    insert into belongsto values (v_ID+1,category);
 end proc_putProduct;
 /
 
