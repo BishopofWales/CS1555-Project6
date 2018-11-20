@@ -50,17 +50,26 @@ CREATE OR REPLACE TRIGGER trig_bidTimeUpdate
     begin
     update ourSysDate   set c_date = c_date + 1/24/60/60*5;
     end ;
+/
 CREATE OR REPLACE TRIGGER trig_updateHighBid
     after insert on Bidlog
     begin
     null;
-    /*To do: find bid that was just add (sort by date) and update the value of the product that corresponds to the bid*/
+    /*To do: find bid that was just added (sort by date) and update the value of the product that corresponds to the bid*/
     end;
-create or replace procedure proc_putProduct(name in varchar2,description in varchar2, category in varchar2,number_of_days in int) as
+/
+create or replace procedure proc_putProduct(name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as
+v_ID int;
 begin
-    /*TO DO: insert into products tables, auction table, belongs to table*/
-    null;
+    /*TO DO: insert into belongs to table*/
+    select max(auction_id) into v_ID
+    from Product;
+    
+    insert into Product values(v_ID+1, name, description, user, sysdate, minprice, number_of_days, 'under auction', null, null, null);
+    
 end proc_putProduct;
+/
+
 /*
 select *, Max(bid_time) 
     from Bidlog 
