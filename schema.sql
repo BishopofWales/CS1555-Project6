@@ -76,5 +76,4 @@ create table BelongsTo (
 commit;
 
 
-
-select auction_id, name, description from Product where auction_id in (SELECT AUCTION_ID from BelongsTo where category = 'Guitars');
+select * from product where REGEXP_LIKE(description,'.*good.*') and REGEXP_LIKE(description,'.*pretty.*');
