@@ -74,3 +74,7 @@ create table BelongsTo (
 );
 
 commit;
+
+
+
+select auction_id, name, description from Product where auction_id in (SELECT AUCTION_ID from BelongsTo where category = 'Guitars');
