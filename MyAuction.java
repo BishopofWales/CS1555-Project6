@@ -74,26 +74,66 @@ public class MyAuction{
 	}
 	public static void browsing(){
 		try{
-			System.out.println("Browsing");
-			Statement stmt = con.createStatement();
-			String sql = "SELECT auction_id, name, description from Product ";
-			ResultSet rs = stmt.executeQuery(sql);
-			while(rs.next()){
-				int auction_id = rs.getInt("auction_id");
-				String name = rs.getString("name");
-				String description = rs.getString("description");
-				System.out.println(name);
-				System.out.println(auction_id);
-				System.out.println(description);
-			}
+			System.out.println("Here are the root categories, select a number to choose a category.");
+			ArrayList<String> categories = getSubCategories(null);
+			chooseSub(categories);
+			
 		}
 		catch(Exception e){
-
+			System.out.print("Browsing query failed" + e);
 		}
 		//attributes,  e.g,  auction  id,  name,  description  (if  through  search  as  mentioned  in  task
 		//(b)), highest bid amount
 
 
+	}
+	public static void chooseSub(ArrayList<String> categories){
+		System.out.println("Please choose a subcategory.");
+		displayCategories(categories);
+		String responseLine = userIn.nextLine();
+		char responseLetter = responseLine.charAt(0);
+		
+		if(isNumeric(responseLine)){
+			
+			int catIndex = Integer.parseInt(responseLine);
+			if(catIndex >= categories.size()){
+				System.out.println("Invalid category number");
+				browsing();
+			}
+			else{
+				String selCat = categories.get(catIndex);
+				ArrayList<String> selCatSubs = getSubCategories(selCat);
+				if(selCatSubs.size() == 0){
+					listProds(selCat);
+				}
+				else{
+					chooseSub(selCatSubs);
+				}
+			}
+			
+		}
+		else{
+			System.out.println("A non-number was entered, returning to main menu");
+			browsing();
+		}
+	}
+
+	static void listProds(String category){
+		try{
+			System.out.println("Here are the products in " + category);
+			Statement stmt = con.createStatement();
+			String sql = null;
+			sql = "SELECT auction_id from BelongsTo where category = '" + category + "'";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				System.out.println(rs.getInt("auction_id"));
+			}
+		}
+		catch(Exception e){
+			System.out.println("Could not list products: " + e);
+		}
+		
+		
 	}
 	public static void searching(){
 		System.out.println("Searching");
@@ -118,5 +158,43 @@ public class MyAuction{
 			System.out.println("Could not close connection.");
 		}
 		System.exit(0);
+	}
+	public static void displayCategories(ArrayList<String> categories)
+	{
+		int count = 0;
+			for(String category:categories){
+				System.out.println("(" + count + ")" + category);
+
+				count++;
+			}
+	}
+
+	public static ArrayList<String> getSubCategories(String cat){
+		ArrayList<String> categories = null;
+		try{
+			Statement stmt = con.createStatement();
+			String sql = null;
+			if(cat == null){
+				sql = "SELECT name from Category where parent_category is null";
+			}
+			else{
+				sql = "SELECT name from Category where parent_category = '"+cat + "'";
+			}
+			
+			ResultSet rs = stmt.executeQuery(sql);
+			categories = new ArrayList<String>();
+
+			while(rs.next()){
+				categories.add(rs.getString("name"));
+			}
+		}
+		catch(Exception e){
+			System.out.println("could not retrieve categories: "+ e);
+		}
+		return categories;
+	}
+	public static boolean isNumeric(String str)
+	{
+	return str.matches("-?\\d+(\\.\\d+)?");  //match a number with optional '-' and decimal.
 	}
 }
