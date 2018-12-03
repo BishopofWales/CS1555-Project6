@@ -7,16 +7,16 @@ public class MyAuction{
 	static final String DB_PWD = "4031317";
 	static final String DB_USR = "mph47";
 	static Scanner userIn;
+
+	static Connection con = null;
 	public static void main(String[] args){
 		System.out.println(System.getProperty("java.class.path"));
 		userIn = new Scanner(System.in);
 			
-		Connection con = null;
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");	
 			DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
 			con = DriverManager.getConnection( DB_URL,DB_USR, DB_PWD );
-			con.close();
 		}
 		catch(Exception e){
 			System.out.println("Did not connect to database." + e);
@@ -24,7 +24,21 @@ public class MyAuction{
 		finally{
 
 		}
-		custMenu();
+		System.out.println("(u)ser or (a)dmin?");
+		String responseLine = userIn.nextLine();
+		char responseLetter = responseLine.charAt(0);
+		if(responseLetter == 'u'){
+			custMenu();
+		}
+		else if(responseLetter == 'a'){
+			quitting();
+		}
+		else{
+			System.exit(0);
+		}
+	}
+	public static void adminMenu(){
+
 	}
 	public static void custMenu(){
 		System.out.println("Welcome! Would you like to:");
@@ -37,8 +51,8 @@ public class MyAuction{
 			}
 			char responseLetter = responseLine.charAt(0);
 			switch(responseLetter){
-				case 'q': System.exit(0);
-				
+				case 'q': quitting();
+
 				case 'a':	browsing();
 							break;
 				case 'b':	searching();
@@ -59,7 +73,27 @@ public class MyAuction{
 		
 	}
 	public static void browsing(){
-		System.out.println("Browsing");
+		try{
+			System.out.println("Browsing");
+			Statement stmt = con.createStatement();
+			String sql = "SELECT auction_id, name, description from Product ";
+			ResultSet rs = stmt.executeQuery(sql);
+			while(rs.next()){
+				int auction_id = rs.getInt("auction_id");
+				String name = rs.getString("name");
+				String description = rs.getString("description");
+				System.out.println(name);
+				System.out.println(auction_id);
+				System.out.println(description);
+			}
+		}
+		catch(Exception e){
+
+		}
+		//attributes,  e.g,  auction  id,  name,  description  (if  through  search  as  mentioned  in  task
+		//(b)), highest bid amount
+
+
 	}
 	public static void searching(){
 		System.out.println("Searching");
@@ -75,5 +109,14 @@ public class MyAuction{
 	}
 	public static void suggestions(){
 		System.out.println("Suggestions");
+	}
+	public static void quitting(){
+		try{
+			con.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close connection.");
+		}
+		System.exit(0);
 	}
 }
