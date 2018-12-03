@@ -12,9 +12,9 @@ public class MyAuction{
 	public static void main(String[] args){
 		System.out.println(System.getProperty("java.class.path"));
 		userIn = new Scanner(System.in);
-			
+
 		try{
-			Class.forName("oracle.jdbc.driver.OracleDriver");	
+			Class.forName("oracle.jdbc.driver.OracleDriver");
 			DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
 			con = DriverManager.getConnection( DB_URL,DB_USR, DB_PWD );
 		}
@@ -31,17 +31,40 @@ public class MyAuction{
 			custMenu();
 		}
 		else if(responseLetter == 'a'){
-			quitting();
+			adminMenu();
 		}
 		else{
 			System.exit(0);
 		}
 	}
 	public static void adminMenu(){
+		System.out.println("Welcome Administrator! Would you like to:");
+		while (true) {
+					System.out.println("----------------\n(a)Register A New Customer\n(b)Update The System Date\n(c)Generate Product Statistics\n(d)In-Depth Product Statistic\n(e)Quit");
+					String responseLine = userIn.nextLine();
+					if(responseLine.length() > 1){
+						System.out.println("Please specify the letter for the option you would like");
+						continue;
+					}
+					char responseLetter = responseLine.charAt(0);
+					switch(responseLetter){
+						case 'e': quitting();
 
+						case 'a':	registerCustomer();
+									break;
+						case 'b':	updateDate();
+									break;
+						case 'c':	productStats();
+									break;
+						case 'd':	inDepthStats();
+									break;
+						default:	System.out.println("Please select options (a-f) or (q) to quit");
+									break;
+					}
+		}
 	}
 	public static void custMenu(){
-		System.out.println("Welcome! Would you like to:");
+		System.out.println("Welcome Customer! Would you like to:");
 		while(true){
 			System.out.println("----------------\n(a)Browse\n(b)Search\n(c)Sell\n(d)Bid\n(e)Sell\n(f)Get suggestions\n(q)Quit");
 			String responseLine = userIn.nextLine();
@@ -68,9 +91,9 @@ public class MyAuction{
 				default:	System.out.println("Please select options (a-f) or (q) to quit");
 							break;
 			}
-			
+
 		}
-		
+
 	}
 	public static void browsing(){
 		try{
@@ -119,4 +142,5 @@ public class MyAuction{
 		}
 		System.exit(0);
 	}
+
 }
