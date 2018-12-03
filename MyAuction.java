@@ -1,10 +1,29 @@
 import java.io.*;
 import java.util.*;
+import java.sql.*;
 
 public class MyAuction{
+	static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
+	static final String DB_PWD = "4031317";
+	static final String DB_USR = "mph47";
 	static Scanner userIn;
 	public static void main(String[] args){
+		System.out.println(System.getProperty("java.class.path"));
 		userIn = new Scanner(System.in);
+			
+		Connection con = null;
+		try{
+			Class.forName("oracle.jdbc.driver.OracleDriver");	
+			DriverManager.registerDriver (new oracle.jdbc.driver.OracleDriver());
+			con = DriverManager.getConnection( DB_URL,DB_USR, DB_PWD );
+			con.close();
+		}
+		catch(Exception e){
+			System.out.println("Did not connect to database." + e);
+		}
+		finally{
+
+		}
 		custMenu();
 	}
 	public static void custMenu(){
