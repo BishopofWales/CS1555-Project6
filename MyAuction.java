@@ -1,12 +1,15 @@
 import java.io.*;
 import java.util.*;
 import java.sql.*;
+import java.text.*;
 
 public class MyAuction{
 	static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
 	static final String DB_PWD = "4031317";
 	static final String DB_USR = "mph47";
 	static Scanner userIn;
+	static String query, username, password;
+	static SimpleDateFormat dateFormat;
 
 	static Connection con = null;
 	public static void main(String[] args){
@@ -37,6 +40,43 @@ public class MyAuction{
 			System.exit(0);
 		}
 	}
+
+	//Verify login credentials
+	public boolean login(int type) {
+	/*
+	type 2 = user (login)
+	*/
+	            try {
+	                  System.out.println("PLEASE ENTER YOUR LOGIN CREDENTIALS");
+	                  username = getUserInput("Username");
+	                  password = getUserInput("Password");
+
+	                  ResultSet resultSet;
+	                  if (type == 2) {
+	                        resultSet = query("SELECT LOGIN, PASSWORD FROM USER");
+	                  }
+	                  else {
+	                        resultSet = query("SELECT LOGIN, PASSWORD FROM ADMINISTRATOR");
+	                  }
+
+	                  while (resultSet.next()) {
+	                        if (username.equals(resultSet.getString(1)) && password.equals(resultSet.getString(2))) {
+	                              return true; //username and password combo is correct
+	                        }
+	                  }
+	                  return false;
+	            }
+
+	            catch (SQLException e) {
+	                  System.out.println("ERROR RUNNING QUERIES: " + e.toString());
+	            }
+	            return false;
+	      }
+
+////////////////////////////////////////////////////////////////////////////////
+//ADMINISTRATOR MENU ///////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 	public static void adminMenu(){
 		System.out.println("Welcome Administrator! Would you like to:");
 		while (true) {
@@ -63,6 +103,71 @@ public class MyAuction{
 					}
 		}
 	}
+
+	//Helpers
+	      public static String getUserInput(String prompt) {
+	            System.out.println(prompt + ": ");
+	            return userIn.nextLine().trim();
+	      }
+
+	      public static ResultSet query(String query) {
+	            try {
+	                  Statement s = con.createStatement();
+	                  return s.executeQuery(query);
+	            }
+	            catch(SQLException e) {
+	                  System.out.println("ERROR RUNNING DATABASE QUERY: " + e.toString());
+	                  return null;
+	            }
+	      }
+
+	      public static ResultSet query(String query, List<String> parameters) {
+	            try {
+	                  PreparedStatement pStatement = con.prepareStatement(query);
+	                  for (int i = 1; i <= parameters.size(); i++) {
+	                        pStatement.setString(i, parameters.get(i - 1));
+	                  }
+	                  return pStatement.executeQuery();
+	            }
+	            catch (SQLException e) {
+	                  System.out.println("ERROR RUNNING QUERY: " + e.toString());
+	                  return null;
+	            }
+	      }
+//Update System Date
+	public static void updateDate() {
+
+					String date;
+					date = getUserInput("\n PLEASE SET THE DATE (PLEASE FOLLOW FORMAT DD-MM-YYYY/HH:MI:SS)");
+					ResultSet resultSet;
+					resultSet = query("update sys_time set my_time = to_date('" + date + "', 'dd-mm-yyyy/hh:mi:ssam'");
+					if (resultSet == null) {
+								System.out.println("PLEASE ENTER DATE IN CORRECT FORMAT");
+					}
+					else {
+								System.out.println("UPDATE SUCCESSFUL");
+					}
+
+	}
+
+//Register Customer
+	public static void registerCustomer() {
+				System.out.println("Registering Customer");
+	}
+
+//Product Stats
+	public static void productStats() {
+				System.out.println("Product Stats");
+	}
+
+//In-Depth Product Stats
+	public static void inDepthStats() {
+				System.out.println("In Depth Stats");
+	}
+////////////////////////////////////////////////////////////////////////////////
+//CUSTOMER MENU ////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 	public static void custMenu(){
 		System.out.println("Welcome Customer! Would you like to:");
 		while(true){
