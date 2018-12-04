@@ -74,3 +74,6 @@ create table BelongsTo (
 );
 
 commit;
+
+
+select * from product where REGEXP_LIKE(description,'.*good.*') and REGEXP_LIKE(description,'.*pretty.*');
