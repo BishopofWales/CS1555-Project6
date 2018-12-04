@@ -348,14 +348,6 @@ public class MyAuction {
 		}
 	}
 
-	public static void auction() {
-		System.out.println("Auction");
-	}
-
-	public static void bidding() {
-		System.out.println("Bidding");
-	}
-
 	public static void selling() {
 		System.out.println("Selling");
 	}
@@ -375,5 +367,112 @@ public class MyAuction {
 
 	public static boolean isNumeric(String str) {
 		return str.matches("-?\\d+(\\.\\d+)?"); // match a number with optional '-' and decimal.
+	}
+
+	
+	public static void auction() throws Exception{
+		String name, description, category, user;
+		int numDays, minPrice;
+		Statement statement = con.createStatement();
+		PreparedStatement prepStatement;
+		String query;
+		
+		System.out.println("Enter your user name:");
+		user = userIn.nextLine();
+		System.out.println("Enter the name of your product:");
+		name = userIn.nextLine();
+		System.out.println("Enter a description for your product (optional):");
+		description = userIn.nextLine();
+		System.out.println("Enter the category of your product:");
+		category = userIn.nextLine();
+		System.out.println("Enter the amount of days the auction will last:");
+		numDays = Integer.parseInt(userIn.nextLine());
+		System.out.println("Enter the minimum price you will accept:");
+		minPrice = Integer.parseInt(userIn.nextLine());
+		
+		query = "Call proc_putProduct (?,?,?,?,?,?)";
+		prepStatement = con.prepareStatement(query);
+		prepStatement.setString(1,name);
+		prepStatement.setString(2,description);
+		prepStatement.setString(3,user);
+		prepStatement.setString(4,category);
+		prepStatement.setInt(5,numDays);
+		prepStatement.setInt(6,minPrice);
+		prepStatement.executeUpdate();
+	}
+	
+	public static void bidding() throws Exception{
+		int amount, auctionID;
+		Statement statement = con.createStatement();
+		PreparedStatement prepStatement;
+		String query;
+		
+		System.out.println("Enter the auction ID to bid on:");
+		auctionID = Integer.parseInt(userIn.nextLine());
+		System.out.println("Enter the amount you wish to bid:");
+		amount = Integer.parseInt(userIn.nextLine());
+		
+		statement = con.createStatement();
+		query = "Update product set amount=? where auction_ID=?";
+		prepStatement = con.prepareStatement(query);
+		prepStatement.setInt(1, amount);
+		prepStatement.setInt(2, auctionID);
+		prepStatement.executeUpdate();
+	}
+	
+	public static void registerCustomer() throws Exception {
+		String name, login, password, address, email, admin;
+		Statement statement = con.createStatement();
+		PreparedStatement prepStatement;
+		String query;
+		
+		System.out.println("Enter your name:");
+		name = userIn.nextLine();
+		System.out.println("Enter your login:");
+		login = userIn.nextLine();
+		System.out.println("Enter your password:");
+		password = userIn.nextLine();
+		System.out.println("Enter your address:");
+		address = userIn.nextLine();
+		System.out.println("Enter your email:");
+		email = userIn.nextLine();
+		System.out.println("Are you an administrator? y/n:");
+		admin = userIn.nextLine();
+		
+		if (admin.equalsIgnoreCase("y")) {
+			statement = con.createStatement();
+			query = "insert into customer values (?,?,?,?,?)";
+			prepStatement = con.prepareStatement(query);
+			prepStatement.setString(1,login);
+			prepStatement.setString(2,password);
+			prepStatement.setString(3,name);
+			prepStatement.setString(4,address);
+			prepStatement.setString(5,email);
+			prepStatement.executeUpdate();
+		} else if (admin.equalsIgnoreCase("n")) {
+			statement = con.createStatement();
+			query = "insert into administrator values (?,?,?,?,?)";
+			prepStatement = con.prepareStatement(query);
+			prepStatement.setString(1,login);
+			prepStatement.setString(2,password);
+			prepStatement.setString(3,name);
+			prepStatement.setString(4,address);
+			prepStatement.setString(5,email);
+			prepStatement.executeUpdate();
+		} else {
+			System.out.println("Invalid response, please answer 'y' or 'n'");
+		}
+	}
+	
+	private static void updateDate() {
+		
+	}
+	
+	private static void productStats() {
+		
+	}
+	
+	private static void inDepthStats() {
+		
 	}
 }
