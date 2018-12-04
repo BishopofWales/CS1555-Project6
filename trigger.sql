@@ -58,20 +58,28 @@ CREATE OR REPLACE TRIGGER trig_updateHighBid
     /*To do: find bid that was just added (sort by date) and update the value of the product that corresponds to the bid*/
     end;
 /
-create or replace procedure proc_putProduct(name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as
-v_ID int;
-v_date date;
+create or replace procedure proc_putProduct(name in varchar2) as /*name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as*/
+
 begin
+    /*
     select c_date into v_date from ourSysDate;
     select max(auction_id) into v_ID
     from Product;
     
-    insert into Product values(v_ID+1, name, description, user, v_date, minprice, number_of_days, 'under auction', null, null, null);
-    insert into belongsto values (v_ID+1,category);
+    insert into Product (auction_id,name,description,seller,start_date,min_price,number_of_days,status,buyer,sell_date,amount) values(123,'name','desc.', null, null,0,200,200,'sold',null,100);*/
+    /*, name, description, user, v_date, minprice, number_of_days, 'under auction', '', '', '');*/
+    insert into BelongsTo values (5000, 'Guitars');
+
+    
 end proc_putProduct;
 /
-
 /*
+call proc_putProduct('gaming PC');
+insert into BelongsTo values (5000, 'Guitars');
+select * from BelongsTo;*
+*/
+/*
+
 select *, Max(bid_time) 
     from Bidlog 
     group by auction_id;

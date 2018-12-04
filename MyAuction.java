@@ -48,26 +48,30 @@ public class MyAuction {
 			}
 			char responseLetter = responseLine.charAt(0);
 			switch (responseLetter) {
-			case 'e':
+			case 'q':
 				quitting();
 
 			case 'a':
-				registerCustomer();
+				// registerCustomer();
 				break;
 			case 'b':
-				updateDate();
+				// updateDate();
 				break;
 			case 'c':
 				productStats();
 				break;
 			case 'd':
-				inDepthStats();
+				// inDepthStats();
 				break;
 			default:
-				System.out.println("Please select options (a-f) or (q) to quit");
+				System.out.println("Please select options (a-d) or (q) to quit");
 				break;
 			}
 		}
+	}
+
+	static void productStats() {
+		System.out.println("Would you like to see statistics for all items, or one customer?");
 	}
 
 	public static void custMenu() {
@@ -271,9 +275,7 @@ public class MyAuction {
 		System.exit(0);
 	}
 
-	<<<<<<<HEAD
-
 	public static boolean isNumeric(String str) {
 		return str.matches("-?\\d+(\\.\\d+)?"); // match a number with optional '-' and decimal.
 	}
-}=======}>>>>>>>origin/jaj110
+}
