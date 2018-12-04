@@ -14,7 +14,7 @@ public class MyAuction {
 
 	static Connection con = null;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception{
 		System.out.println(System.getProperty("java.class.path"));
 		userIn = new Scanner(System.in);
 
@@ -75,7 +75,7 @@ public class MyAuction {
 	//////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////
 
-	public static void adminMenu() {
+	public static void adminMenu() throws Exception{
 		System.out.println("Welcome Administrator! Would you like to:");
 		while (true) {
 			System.out.println(
@@ -153,26 +153,13 @@ public class MyAuction {
 
 	}
 
-	// Register Customer
-	public static void registerCustomer() {
-		System.out.println("Registering Customer");
-	}
-
-	// Product Stats
-	public static void productStats() {
-		System.out.println("Product Stats");
-	}
-
-	// In-Depth Product Stats
-	public static void inDepthStats() {
-		System.out.println("In Depth Stats");
-	}
+	
 	////////////////////////////////////////////////////////////////////////////////
 	// CUSTOMER MENU
 	//////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////
 
-	public static void custMenu() {
+	public static void custMenu() throws Exception {
 		System.out.println("Welcome Customer! Would you like to:");
 		while (true) {
 			System.out.println(
@@ -310,7 +297,7 @@ public class MyAuction {
 		return categories;
 	}
 
-	public static void searching() {
+	public static void searching() throws Exception{
 		// to do: refine regular expression so that it matches only with words, not
 		// subsets of words
 		// \s is the whitespace character.
@@ -464,9 +451,7 @@ public class MyAuction {
 		}
 	}
 	
-	private static void updateDate() {
-		
-	}
+	
 	
 	private static void productStats() {
 		
