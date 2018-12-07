@@ -1,3 +1,7 @@
+alter trigger trig_updateHighBid disable;
+
+insert into ourSysDATE values (sysdate);
+
 insert into Customer values ('bad68', 'hunter2', 'brandon', 'cato', 'bad68@pitt.edu');
 insert into Customer values ('tom', 'hunter2', 'thomas', 'juliet', 'bad67@pitt.edu');
 insert into Customer values ('tonyboy', 'hunter2', 'tony', 'ward', 'bad66@pitt.edu');
@@ -26,6 +30,7 @@ insert into Category values ('Computers', 'Electronics');
 insert into Category values ('Phones', 'Electronics');
 insert into Category values ('Musical Instruments', null);
 insert into Category values ('Guitars', 'Musical Instruments');
+insert into Category values ('Furniture', null);
 
 insert into BelongsTo values (1, 'Computers');
 insert into BelongsTo values (2, 'Computers');
@@ -33,20 +38,16 @@ insert into BelongsTo values (3, 'Phones');
 insert into BelongsTo values (4, 'Guitars');
 insert into BelongsTo values (5, 'Guitars');
 
-insert into ourSysDATE values (sysdate);
 commit;
+alter trigger trig_updateHighBid enable;
 
 select * from Product;
 select * from ourSysDATE;
 
 update ourSysDATE set c_date = sysdate + 5;
+insert into Bidlog values (1, 1, 'tonyboy', sysdate, 130);
+insert into Bidlog values (1, 1, 'tonyboy', sysdate, 150);
 commit; 
 
 select * from Product;
 select * from ourSysDATE;
-
-select func_bidCount(12, 'tom') from Bidlog;
-
-select func_productCount(12, 'Guitars') from Product;
-
-select func_buyingAmount(12, 'tom') from Product;

@@ -34,10 +34,10 @@ create table Product (
     name varchar2(20),
     description varchar2(30),
     seller varchar2(10),
-    start_date date,
+    start_date date not null,
     min_price int,
-    number_of_days int,
-    status varchar2(15) not null,
+    number_of_days int not null,
+    status varchar2(15) not null check (status in ('under auction', 'sold', 'closed', 'withdrawn')),
     buyer varchar2(10),
     sell_date date,
     amount int,
@@ -74,6 +74,3 @@ create table BelongsTo (
 );
 
 commit;
-
-
-select * from product where REGEXP_LIKE(description,'.*good.*') and REGEXP_LIKE(description,'.*pretty.*');
