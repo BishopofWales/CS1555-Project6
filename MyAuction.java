@@ -79,7 +79,7 @@ public class MyAuction {
 		System.out.println("Welcome Administrator! Would you like to:");
 		while (true) {
 			System.out.println(
-					"----------------\n(a)Register A New Customer\n(b)Update The System Date\n(c)Generate Product Statistics\n(d)In-Depth Product Statistic\n(e)Quit");
+					"----------------\n(a)Register A New Customer\n(b)Update The System Date\n(c)Generate Product Statistics\n(d)In-Depth Product Statistic\n(q)Quit");
 			String responseLine = userIn.nextLine();
 			if (responseLine.length() > 1) {
 				System.out.println("Please specify the letter for the option you would like");
@@ -97,7 +97,7 @@ public class MyAuction {
 				// updateDate();
 				break;
 			case 'c':
-				productStats();
+				ProductStats.start(con,userIn);
 				break;
 			case 'd':
 				// inDepthStats();
@@ -320,9 +320,7 @@ public class MyAuction {
 	
 	
 	
-	private static void productStats() {
-		
-	}
+	
 	
 	private static void inDepthStats() {
 		
