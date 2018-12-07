@@ -178,7 +178,7 @@ public class MyAuction {
 				Browsing.start(con,userIn);
 				break;
 			case 'b':
-				searching();
+				Searching.start(con,userIn);
 				break;
 			case 'c':
 				auction();
@@ -202,43 +202,7 @@ public class MyAuction {
 	}
 	
 
-	public static void searching() throws Exception{
-		// to do: refine regular expression so that it matches only with words, not
-		// subsets of words
-		// \s is the whitespace character.
-		System.out.println("Please enter up to two keywords, seperated by a space. Results will match BOTH keywords");
-		String responseLine = userIn.nextLine();
-		String[] keywords = responseLine.split(" ");
-		for (int i = 0; i < keywords.length; i++) {
-			System.out.println(keywords[i]);
-		}
-		if (keywords.length > 2) {
-			System.out.println("No more than two keywords.");
-			custMenu();
-		}
-		if (keywords.length <= 0) {
-			System.out.println("At least one keyword.");
-			custMenu();
-		}
-		try {
-			Statement stmt = con.createStatement();
-			String sql = null;
-			if (keywords.length == 1) {
-				sql = "select * from product where REGEXP_LIKE(description,'.*" + keywords[0] + ".*')";
-			} else {
-				sql = "select * from product where REGEXP_LIKE(description,'.*" + keywords[0]
-						+ ".*') and REGEXP_LIKE(description,'.*" + keywords[1] + ".*')";
-			}
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				System.out.println(rs.getString("name"));
-				System.out.println(rs.getString("description"));
-				System.out.println("-----------------");
-			}
-		} catch (Exception e) {
-			System.out.println("Search failed:" + e);
-		}
-	}
+	
 
 	public static void selling() {
 		System.out.println("Selling");
