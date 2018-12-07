@@ -87,7 +87,7 @@ public class Browsing{
 			System.out.println("Here are the products in " + category);
 			Statement stmt = con.createStatement();
 
-			String sql = "select auction_id, name, description from Product where auction_id in (SELECT AUCTION_ID from BelongsTo where category = '"
+			String sql = "select auction_id, name, description from Product where status = 'under auction' AND auction_id in (SELECT AUCTION_ID from BelongsTo where category = '"
 					+ category + "')";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -105,7 +105,7 @@ public class Browsing{
 	static void prodsByPrice(){
 		try{
 			Statement stmt = con.createStatement();
-			String sql = "select auction_id, name, description,amount from Product where amount is not null order by amount desc";
+			String sql = "select auction_id, name, description,amount from Product where amount is not null and status = 'under auction' order by amount desc";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				System.out.println("-----------------------");
@@ -124,7 +124,7 @@ public class Browsing{
 	static void prodsByAlpha(){
 		try{
 			Statement stmt = con.createStatement();
-			String sql = "select auction_id, name, description from Product order by name asc";
+			String sql = "select auction_id, name, description from Product where status = 'under auction' order by name asc";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				System.out.println("-----------------------");
