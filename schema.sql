@@ -76,4 +76,5 @@ create table BelongsTo (
 commit;
 
 
-select * from product where REGEXP_LIKE(description,'.*good.*') and REGEXP_LIKE(description,'.*pretty.*');
+select auction_id, name, description,amount from Product where amount is not null order by amount desc;
+select auction_id, name, description from Product order by name desc;
