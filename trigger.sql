@@ -84,13 +84,17 @@ CREATE OR REPLACE TRIGGER trig_updateHighBid
 create or replace procedure proc_putProduct(name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as
 v_ID int;
 v_date date;
+amountFound int;
 begin
     select c_date into v_date from ourSysDate;
     select max(auction_id) into v_ID
     from Product;
-    
-    insert into Product values(v_ID+1, name, description, user, v_date, minprice, number_of_days, 'under auction', null, null, null);
-    insert into belongsto values (v_ID+1,category);
+    select count(*) into amountFound from Category where parent_category = category;
+    if amountFound = 0 then
+        insert into Product values(v_ID+1, name, description, user, v_date, minprice, number_of_days, 'under auction', null, null, null);
+        insert into belongsto values (v_ID+1,category);
+    else raise_application_error(-20001, 'Category must be a smallest sub-category');
+    end if;
 end proc_putProduct;
 /
 
