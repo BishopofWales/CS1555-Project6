@@ -45,7 +45,6 @@ public class Searching {
 				System.out.println("-----------------");
 				System.out.println(rs.getString("name"));
 				System.out.println(rs.getString("description"));
-
 			}
 		} catch (Exception e) {
 			System.out.println("Search failed:" + e);

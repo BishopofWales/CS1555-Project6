@@ -77,4 +77,6 @@ commit;
 
 
 select auction_id, name, description,amount from Product where amount is not null order by amount desc;
-select auction_id, name, description from Product order by name desc;
+select auction_id, name, description from Product order by name asc;
+
+select bidder,auction_id,bidsn from BidLog bid1  where amount = (select Max(amount) from bidlog bid2 group by auction_id having bid2.auction_id = bid1.auction_id );

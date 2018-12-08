@@ -43,14 +43,38 @@ public class ProductStats {
 	static void prodsByCust() {
 		System.out.println("Please type the login of the user to list products.");
 		String responseLine = userIn.nextLine();
-		System.out.println("Here are statistics on all products.");
-		String sql = "select auction_id, name, description from Product where seller = '"
+		String sql = "select auction_id, name, status, bidder from Product where seller = '"
 				+ MyAuction.filterString(responseLine) + "'";
-		MyAuction.query(sql);
-
+		ResultSet rs = MyAuction.query(sql);
+		try{
+			while (rs.next()) {
+				System.out.println("-----------------");
+				System.out.println("Auction ID: " + rs.getString("auction_id"));
+				System.out.println("Name: " + rs.getString("name"));	
+				System.out.println("Status: " +  rs.getString("status"));
+				System.out.println("Highest bidder: " + rs.getString("bidder"));
+				
+			}
+		}
+		catch(Exception e){
+			System.out.println("Reading back search failed");
+		}
+		
 	}
 
 	static void allProds() {
+		String sql ="select bidder,auction_id,bidsn from BidLog bid1  where amount = (select Max(amount) from bidlog bid2 group by auction_id having bid2.auction_id = bid1.auction_id )";
+		ResultSet rs = MyAuction.query(sql);
+		try{
+			while (rs.next()) {
+				System.out.println("-----------------");
+				System.out.println("Auction ID: " + rs.getString("auction_id"));
+				System.out.println("Highest bidder: " + rs.getString("bidder"));
+			}
+		}
+		catch(Exception e){
+			System.out.println("Reading back search failed");
+		}
 		// System.out.println("Here are statistics for customer.");
 
 	}
