@@ -11,6 +11,7 @@ public class MyAuction {
 	static Scanner userIn;
 	static String query, username, password;
 	static SimpleDateFormat dateFormat;
+	static String user;
 
 	static Connection con = null;
 
@@ -400,10 +401,11 @@ public class MyAuction {
 		amount = Integer.parseInt(userIn.nextLine());
 		
 		statement = con.createStatement();
-		query = "Update product set amount=? where auction_ID=?";
+		query = "Insert into Bidlog values (1,?,?,sysdate,?)";
 		prepStatement = con.prepareStatement(query);
 		prepStatement.setInt(1, amount);
-		prepStatement.setInt(2, auctionID);
+		prepStatement.setString(2, user);
+		prepStatement.setInt(3, amount);
 		prepStatement.executeUpdate();
 	}
 	
@@ -413,17 +415,17 @@ public class MyAuction {
 		PreparedStatement prepStatement;
 		String query;
 		
-		System.out.println("Enter your name:");
+		System.out.println("Enter a name:");
 		name = userIn.nextLine();
-		System.out.println("Enter your login:");
+		System.out.println("Enter a login:");
 		login = userIn.nextLine();
-		System.out.println("Enter your password:");
+		System.out.println("Enter a password:");
 		password = userIn.nextLine();
-		System.out.println("Enter your address:");
+		System.out.println("Enter an address:");
 		address = userIn.nextLine();
-		System.out.println("Enter your email:");
+		System.out.println("Enter an email:");
 		email = userIn.nextLine();
-		System.out.println("Are you an administrator? y/n:");
+		System.out.println("Is this customer an administrator? y/n:");
 		admin = userIn.nextLine();
 		
 		if (admin.equalsIgnoreCase("y")) {
