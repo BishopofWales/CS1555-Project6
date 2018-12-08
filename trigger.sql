@@ -80,24 +80,7 @@ CREATE OR REPLACE TRIGGER trig_updateHighBid
         end if;
     end;
 /
-/*
-CREATE OR REPLACE TRIGGER trig_updateHighBid
-    after update on Product
-    for each row
-    declare
-        currentTime date;
-        bidId int;
-    begin
-        select c_date into currentTime from ourSysDate;
-        select max(bidsn) + 1 into bidId from Bidlog;
-    
-        if (((:old.amount >= :new.amount and :old.buyer <> :new.buyer) or (:old.amount > :new.amount and :old.buyer = :new.buyer)) and :old.auction_id = :new.auction_id) 
-        then raise_application_error(-20000, 'Current bid higher than new bid'); 
-        else insert into Bidlog values (BidId, :new.auction_id, :new.buyer, currentTime, :new.amount);
-        end if;
-    end;
-/
-*/
+
 create or replace procedure proc_putProduct(name in varchar2,description in varchar2, user in varchar2, category in varchar2,number_of_days in int,minprice in int) as
 v_ID int;
 v_date date;
