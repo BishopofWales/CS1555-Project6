@@ -361,9 +361,6 @@ public class MyAuction {
 	public static void auction() throws Exception{
 		String name, description, category, user;
 		int numDays, minPrice;
-		Statement statement = con.createStatement();
-		PreparedStatement prepStatement;
-		String query;
 		
 		System.out.println("Enter your user name:");
 		user = userIn.nextLine();
@@ -378,42 +375,50 @@ public class MyAuction {
 		System.out.println("Enter the minimum price you will accept:");
 		minPrice = Integer.parseInt(userIn.nextLine());
 		
-		query = "Call proc_putProduct (?,?,?,?,?,?)";
-		prepStatement = con.prepareStatement(query);
-		prepStatement.setString(1,name);
-		prepStatement.setString(2,description);
-		prepStatement.setString(3,user);
-		prepStatement.setString(4,category);
-		prepStatement.setInt(5,numDays);
-		prepStatement.setInt(6,minPrice);
-		prepStatement.executeUpdate();
+		try {
+			Statement statement = con.createStatement();
+			PreparedStatement prepStatement;
+			String query;
+			query = "Call proc_putProduct (?,?,?,?,?,?)";
+			prepStatement = con.prepareStatement(query);
+			prepStatement.setString(1,name);
+			prepStatement.setString(2,description);
+			prepStatement.setString(3,user);
+			prepStatement.setString(4,category);
+			prepStatement.setInt(5,numDays);
+			prepStatement.setInt(6,minPrice);
+			prepStatement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("Error putting item for auction: " + e.toString());
+		}
 	}
 	
 	public static void bidding() throws Exception{
 		int amount, auctionID;
-		Statement statement = con.createStatement();
-		PreparedStatement prepStatement;
-		String query;
 		
 		System.out.println("Enter the auction ID to bid on:");
 		auctionID = Integer.parseInt(userIn.nextLine());
 		System.out.println("Enter the amount you wish to bid:");
 		amount = Integer.parseInt(userIn.nextLine());
 		
-		statement = con.createStatement();
-		query = "Insert into Bidlog values (1,?,?,sysdate,?)";
-		prepStatement = con.prepareStatement(query);
-		prepStatement.setInt(1, amount);
-		prepStatement.setString(2, user);
-		prepStatement.setInt(3, amount);
-		prepStatement.executeUpdate();
+		try {
+			Statement statement = con.createStatement();
+			PreparedStatement prepStatement;
+			String query;
+			statement = con.createStatement();
+			query = "Insert into Bidlog values (1,?,?,sysdate,?)";
+			prepStatement = con.prepareStatement(query);
+			prepStatement.setInt(1, amount);
+			prepStatement.setString(2, user);
+			prepStatement.setInt(3, amount);
+			prepStatement.executeUpdate();
+		} catch (Exception e) {
+			System.out.println("Error placing bid: " + e.toString());
+		}
 	}
 	
 	public static void registerCustomer() throws Exception {
 		String name, login, password, address, email, admin;
-		Statement statement = con.createStatement();
-		PreparedStatement prepStatement;
-		String query;
 		
 		System.out.println("Enter a name:");
 		name = userIn.nextLine();
@@ -427,29 +432,36 @@ public class MyAuction {
 		email = userIn.nextLine();
 		System.out.println("Is this customer an administrator? y/n:");
 		admin = userIn.nextLine();
-		
-		if (admin.equalsIgnoreCase("y")) {
-			statement = con.createStatement();
-			query = "insert into customer values (?,?,?,?,?)";
-			prepStatement = con.prepareStatement(query);
-			prepStatement.setString(1,login);
-			prepStatement.setString(2,password);
-			prepStatement.setString(3,name);
-			prepStatement.setString(4,address);
-			prepStatement.setString(5,email);
-			prepStatement.executeUpdate();
-		} else if (admin.equalsIgnoreCase("n")) {
-			statement = con.createStatement();
-			query = "insert into administrator values (?,?,?,?,?)";
-			prepStatement = con.prepareStatement(query);
-			prepStatement.setString(1,login);
-			prepStatement.setString(2,password);
-			prepStatement.setString(3,name);
-			prepStatement.setString(4,address);
-			prepStatement.setString(5,email);
-			prepStatement.executeUpdate();
-		} else {
-			System.out.println("Invalid response, please answer 'y' or 'n'");
+		try {
+			Statement statement = con.createStatement();
+			PreparedStatement prepStatement;
+			String query;
+			
+			if (admin.equalsIgnoreCase("y")) {
+				statement = con.createStatement();
+				query = "insert into customer values (?,?,?,?,?)";
+				prepStatement = con.prepareStatement(query);
+				prepStatement.setString(1,login);
+				prepStatement.setString(2,password);
+				prepStatement.setString(3,name);
+				prepStatement.setString(4,address);
+				prepStatement.setString(5,email);
+				prepStatement.executeUpdate();
+			} else if (admin.equalsIgnoreCase("n")) {
+				statement = con.createStatement();
+				query = "insert into administrator values (?,?,?,?,?)";
+				prepStatement = con.prepareStatement(query);
+				prepStatement.setString(1,login);
+				prepStatement.setString(2,password);
+				prepStatement.setString(3,name);
+				prepStatement.setString(4,address);
+				prepStatement.setString(5,email);
+				prepStatement.executeUpdate();
+			} else {
+				System.out.println("Invalid response, please answer 'y' or 'n'");
+			}
+		} catch (Exception e) {
+			System.out.println("Error registering customer: " + e.toString());
 		}
 	}
 	
