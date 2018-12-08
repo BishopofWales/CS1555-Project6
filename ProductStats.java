@@ -7,13 +7,14 @@ public class ProductStats {
 	static Connection con = null;
 	static Scanner userIn;
 
-	public static void start(Connection rCon, Scanner rUserIn){
+	public static void start(Connection rCon, Scanner rUserIn) {
 		userIn = rUserIn;
 		con = rCon;
 		productStats();
 	}
-	static void productStats(){
-		
+
+	static void productStats() {
+
 		System.out.println("Would you like stastics on a specific customer or all customers?");
 		System.out.println("(a)Specific customer\n(b)All customers");
 		String responseLine = userIn.nextLine();
@@ -31,17 +32,26 @@ public class ProductStats {
 		case 'b':
 			allProds();
 			break;
-		
+
 		default:
 			System.out.println("Please select (a) or (b), or (c) to return.");
 			productStats();
 			break;
 		}
 	}
-	static void allProds(){
+
+	static void prodsByCust() {
+		System.out.println("Please type the login of the user to list products.");
+		String responseLine = userIn.nextLine();
 		System.out.println("Here are statistics on all products.");
+		String sql = "select auction_id, name, description from Product where seller = '"
+				+ MyAuction.filterString(responseLine) + "'";
+		MyAuction.query(sql);
+
 	}
-	static void prodsByCust(){
-		System.out.println("Here are statistics for customer.");
+
+	static void allProds() {
+		// System.out.println("Here are statistics for customer.");
+
 	}
 }
