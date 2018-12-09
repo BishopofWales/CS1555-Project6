@@ -10,7 +10,6 @@ public class Searching {
 	public static void start(Connection rCon, Scanner rUserIn) {
 		userIn = rUserIn;
 		con = rCon;
-		searching();
 	}
 
 	public static void searching() {
@@ -20,9 +19,12 @@ public class Searching {
 
 		System.out.println("Please enter up to two keywords, seperated by a space. Results will match BOTH keywords");
 		String responseLine = userIn.nextLine();
-		String filtered = MyAuction.filterString(responseLine);
-
-		String[] keywords = filtered.split(" ");
+		if (!MyAuction.goodString(responseLine)) {
+			System.out.println("Not a good string, only english letters please.");
+			searching();
+			return;
+		}
+		String[] keywords = responseLine.split("\\s");
 		if (keywords[0].length() == 0) {
 			System.out.println("You did not enter a keyword");
 			return;
@@ -31,6 +33,11 @@ public class Searching {
 			System.out.println("No more than two keywords.");
 			return;
 		}
+		executeSearch(keywords);
+
+	}
+
+	public static void executeSearch(String[] keywords) {
 		try {
 			Statement stmt = con.createStatement();
 			String sql = null;
@@ -43,8 +50,10 @@ public class Searching {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				System.out.println("-----------------");
-				System.out.println(rs.getString("name"));
-				System.out.println(rs.getString("description"));
+				System.out.println("Auction ID: " + rs.getString("auction_id"));
+				System.out.println("Name: " + rs.getString("name"));
+				System.out.println("Description: " + rs.getString("description"));
+
 			}
 		} catch (Exception e) {
 			System.out.println("Search failed:" + e);
