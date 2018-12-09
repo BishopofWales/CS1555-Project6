@@ -16,15 +16,8 @@ public class MyAuction {
 
 	public static void main(String[] args) {
 		System.out.println(System.getProperty("java.class.path"));
-		userIn = new Scanner(System.in);
 
-		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
-			con = DriverManager.getConnection(DB_URL, DB_USR, DB_PWD);
-		} catch (Exception e) {
-			System.out.println("Did not connect to database." + e);
-		}
+		start();
 		System.out.println("(u)ser or (a)dmin?");
 		String responseLine = userIn.nextLine();
 		char responseLetter = responseLine.charAt(0);
@@ -34,6 +27,17 @@ public class MyAuction {
 			adminMenu();
 		} else {
 			quitting();
+		}
+	}
+
+	public static void start() {
+		userIn = new Scanner(System.in);
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
+			con = DriverManager.getConnection(DB_URL, DB_USR, DB_PWD);
+		} catch (Exception e) {
+			System.out.println("Did not connect to database." + e);
 		}
 	}
 

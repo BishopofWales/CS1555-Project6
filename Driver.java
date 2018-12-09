@@ -41,10 +41,13 @@ public class Driver {
         String[] keywords = { "not", "good" };
         Searching.executeSearch(keywords);
 
+        System.out.println("2(C)");
+        ProductStats.start(con, null);
+        MyAuction.start();
         System.out.println("Listing admin information on all products");
         ProductStats.allProds();
         System.out.println("Listing admin information on products for bad68");
-        // ProductStats.queryForCust("bad68");
+        ProductStats.queryForCust("bad68");
 
     }
 }
