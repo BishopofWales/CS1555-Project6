@@ -8,7 +8,7 @@ public class Benchmark {
     static final String DB_PWD = "258852bd"; // 4031317
     static final String DB_USR = "bad68"; // mph47
     static Connection con = null;
-    static final int RPT_CNT = 10;
+    static final int RPT_CNT = 100;
     static Scanner userIn;
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.class.path"));
@@ -79,7 +79,7 @@ public class Benchmark {
         // Bid on an auction
         System.out.println("Testing bidding on an auction");
         params.add("1");
-        params.add("adam");
+        params.add("testcust");
         params.add("100000");
 
         ResultSet results = null;
@@ -96,26 +96,7 @@ public class Benchmark {
             System.out.println("Bid placed successfully");
         }
 
-        // Bid on an auction with a low amount
-        System.out.println("Testing bidding on an auction, but the amount bid is too low");
-        params.clear();
-        results = null;
-
-        params.add("1");
-        params.add("adam");
-        params.add("1");
-
-        try {
-            results = Bidding.biddingQuery(params);
-        } catch (Exception e) {
-            System.out.println("Error in biddingQuery: " + e.toString());
-        }
-
-        if (results == null) {
-            System.out.println("Error in biddingQuery");
-        } else {
-            System.out.println("Bid placed successfully");
-        }
+        
     }
 
     public static void testAuction() {
@@ -130,7 +111,7 @@ public class Benchmark {
             params.clear();
             params.add("Couch" + iter);
             params.add("No holes!");
-            params.add("adam");
+            params.add("testcust");
             params.add("Furniture");
             params.add("10");
             params.add("600");

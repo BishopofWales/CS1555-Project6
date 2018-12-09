@@ -83,7 +83,7 @@ public class Driver {
         // Bid on an auction
         System.out.println("Testing bidding on an auction");
         params.add("1");
-        params.add("adam");
+        params.add("testcust");
         params.add("100000");
 
         ResultSet results = null;
@@ -131,7 +131,7 @@ public class Driver {
         System.out.println("Testing adding an auction to the database");
         params.add("Couch");
         params.add("No holes!");
-        params.add("adam");
+        params.add("testcust");
         params.add("Furniture");
         params.add("10");
         params.add("600");
@@ -157,7 +157,7 @@ public class Driver {
 
         params.add("LG G4");
         params.add("Worst phone ever");
-        params.add("adam");
+        params.add("testcust");
         params.add("Electronics");
         params.add("10");
         params.add("600");
@@ -182,7 +182,7 @@ public class Driver {
         String admin = "n";
         // Register a customer
         System.out.println("Testing registering a customer to the database");
-        params.add("testCust");
+        params.add("testcust");
         params.add("12345");
         params.add("adam");
         params.add("210 S Bouquet St");
