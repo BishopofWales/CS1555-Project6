@@ -35,6 +35,7 @@ public class Driver {
 		ArrayList<String> params = new ArrayList<String>();
 		
 		//Bid on an auction
+		System.out.println("Testing bidding on an auction");
 		params.add("1");
 		params.add("adam");
 		params.add("100000");
@@ -54,6 +55,7 @@ public class Driver {
 		}
 		
 		//Bid on an auction with a low amount
+		System.out.println("Testing bidding on an auction, but the amount bid is too low");
 		params.clear();
 		results = null;
 		
@@ -80,6 +82,7 @@ public class Driver {
 		ArrayList<String> params = new ArrayList<String>();
 		
 		//Add an auction to the database
+		System.out.println("Testing adding an auction to the database");
 		params.add("Couch");
 		params.add("No holes!");
 		params.add("adam");
@@ -102,6 +105,7 @@ public class Driver {
 		}
 		
 		//Add an auction without a leaf node category
+		System.out.println("Testing adding an auction to the database, but the category is not a leaf node");
 		params.clear();
 		results = null;
 		
@@ -131,7 +135,7 @@ public class Driver {
 		ArrayList<String> params = new ArrayList<String>();
 		String admin = "n";
 		//Register a customer
-		
+		System.out.println("Testing registering a customer to the database");
 		params.add("testCust");
 		params.add("12345");
 		params.add("adam");
@@ -153,6 +157,7 @@ public class Driver {
 		}
 		
 		//Attempt to register a customer with a conflicting login
+		System.out.println("Testing registering a customer to the database, but the login is already taken");
 		params.clear();
 		admin = "n";
 		results = null;
@@ -177,6 +182,7 @@ public class Driver {
 		}
 		
 		//Register an admin
+		System.out.println("Tesint registering an admin to the database");
 		params.clear();
 		admin = "y";
 		results = null;

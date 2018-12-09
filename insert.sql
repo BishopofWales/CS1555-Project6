@@ -12,9 +12,10 @@ insert into Product values (1, 'computer', 'not good', 'bad68', sysdate-365, 100
 insert into Product values (2, 'computer', 'pretty good', 'bad68', sysdate-6, 150, 10, 'under auction', 'tom', null, 150);
 insert into Product values (3, 'mobile phone', 'broken screen', 'tom', sysdate-270, 80, 30, 'under auction', 'tonyboy', null, 80);
 insert into Product values (4, 'guitar', 'great shape', 'tonyboy', sysdate-30, 400, 20, 'under auction', null, null, null);
-insert into Product values (5, 'guitar case', 'keeps guitar safe', 'tonyboy', sysdate-30, 100, 20, 'sold', 'tom', sysdate, 80);
+insert into Product values (5, 'guitar case', 'keeps guitar safe', 'tonyboy', sysdate-30, 100, 20, 'sold', 'tom', sysdate, 100);
 
 insert into Bidlog values (1, 1, 'tom', sysdate, 120);
+insert into Bidlog values(11,5,'tom',sysdate,100);
 insert into Bidlog values (2, 2, 'tom', sysdate, 150);
 insert into Bidlog values (3, 2, 'tonyboy', sysdate-5, 125);
 insert into Bidlog values (4, 1, 'tom', sysdate-10, 100);
@@ -52,5 +53,3 @@ call proc_putProduct('Another laptop', 'theres a lot of these', 'bad68', 'Electr
 insert into Bidlog values (1, 6, 'tonyboy', sysdate, 550);
 commit; 
 
-select * from Product;
-select * from BelongsTo;

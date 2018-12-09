@@ -14,7 +14,7 @@ public class MyAuction {
 
 	static Connection con = null;
 
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) {
 		System.out.println(System.getProperty("java.class.path"));
 		userIn = new Scanner(System.in);
 
@@ -24,8 +24,6 @@ public class MyAuction {
 			con = DriverManager.getConnection(DB_URL, DB_USR, DB_PWD);
 		} catch (Exception e) {
 			System.out.println("Did not connect to database." + e);
-		} finally {
-
 		}
 		
 		System.out.println("(u)ser or (a)dmin?");
@@ -76,11 +74,11 @@ public class MyAuction {
 	//////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////
 
-	public static void adminMenu() throws Exception{
+	public static void adminMenu() {
 		System.out.println("Welcome Administrator! Would you like to:");
 		while (true) {
 			System.out.println(
-					"----------------\n(a)Register A New Customer\n(b)Update The System Date\n(c)Generate Product Statistics\n(d)In-Depth Product Statistic\n(e)Quit");
+					"----------------\n(a)Register A New Customer\n(b)Update The System Date\n(c)Generate Product Statistics\n(d)In-Depth Product Statistic\n(q)Quit");
 			String responseLine = userIn.nextLine();
 			if (responseLine.length() > 1) {
 				System.out.println("Please specify the letter for the option you would like");
@@ -99,7 +97,8 @@ public class MyAuction {
 				// updateDate();
 				break;
 			case 'c':
-				productStats();
+				ProductStats.start(con, userIn);
+				ProductStats.productStats();
 				break;
 			case 'd':
 				// inDepthStats();
@@ -114,6 +113,10 @@ public class MyAuction {
 	}
 
 	// Helpers
+	public static boolean goodString(String input) {
+		return input.matches("[a-zA-Z\\s]*$");
+	}
+
 	public static String getUserInput(String prompt) {
 		System.out.println(prompt + ": ");
 		return userIn.nextLine().trim();
@@ -157,13 +160,21 @@ public class MyAuction {
 
 	}
 
-	
+	// Register Customer
+	public static void registerCustomer() {
+		System.out.println("Registering Customer");
+	}
+
+	// In-Depth Product Stats
+	public static void inDepthStats() {
+		System.out.println("In Depth Stats");
+	}
 	////////////////////////////////////////////////////////////////////////////////
 	// CUSTOMER MENU
 	//////////////////////////////////////////////////////////////////////////////// ////////////////////////////////////////////////////////////////
 	////////////////////////////////////////////////////////////////////////////////
 
-	public static void custMenu() throws Exception {
+	public static void custMenu() {
 		System.out.println("Welcome Customer! Would you like to:");
 		while (true) {
 			System.out.println(
@@ -180,9 +191,11 @@ public class MyAuction {
 
 			case 'a':
 				Browsing.start(con,userIn);
+        Browsing.browsing();
 				break;
 			case 'b':
-				Searching.start(con,userIn);
+				Searching.start(con, userIn);
+				Searching.searching();
 				break;
 			case 'c':
 				Auction.start(con, userIn);
@@ -208,8 +221,6 @@ public class MyAuction {
 	}
 	
 
-	
-
 	public static void selling() {
 		System.out.println("Selling");
 	}
@@ -232,6 +243,6 @@ public class MyAuction {
 	}
 	
 	private static void inDepthStats() {
-		
+	
 	}
 }

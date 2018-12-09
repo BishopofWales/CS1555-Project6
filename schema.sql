@@ -74,3 +74,4 @@ create table BelongsTo (
 );
 
 commit;
+
