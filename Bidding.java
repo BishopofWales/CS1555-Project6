@@ -12,32 +12,14 @@ public class Bidding {
 		userIn = rUserIn;
 	}
 	
-	public static ResultSet query(String query, List<String> parameters) {
-		try {
-			PreparedStatement pStatement = con.prepareStatement(query);
-			for (int i = 1; i <= parameters.size(); i++) {
-				pStatement.setString(i, parameters.get(i - 1));
-			}
-			return pStatement.executeQuery();
-		} catch (SQLException e) {
-			System.out.println("ERROR RUNNING QUERY: " + e.toString());
-			return null;
-		}
-	}
-	
-	public static String getUserInput(String prompt) {
-		System.out.println(prompt + ": ");
-		return userIn.nextLine().trim();
-	}
-	
 	public static void bidding() {
 		String amount, auctionID, username;
 		ArrayList<String> params = new ArrayList<String>();
 		
 		//Get data from the user and add it to the parameter list
-		username = getUserInput("Enter your username");
-		auctionID = getUserInput("Enter the auction ID to bid on");
-		amount = getUserInput("Enter the amount you wish to bid");
+		username = MyAuction.getUserInput("Enter your username");
+		auctionID = MyAuction.getUserInput("Enter the auction ID to bid on");
+		amount = MyAuction.getUserInput("Enter the amount you wish to bid");
 		params.add(auctionID);
 		params.add(username);
 		params.add(amount);
@@ -59,6 +41,6 @@ public class Bidding {
 	}
 	
 	public static ResultSet biddingQuery(ArrayList<String> params) {
-		return query("Insert into Bidlog values (1,?,?,sysdate,?)", params);
+		return MyAuction.query("Insert into Bidlog values (1,?,?,sysdate,?)", params);
 	}
 }
