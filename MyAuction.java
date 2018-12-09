@@ -6,8 +6,8 @@ import java.text.*;
 public class MyAuction {
 	// javac -classpath '.;.\ojdbc6.jar' MyAuction.java
 	static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-	static final String DB_PWD = "258852bd"; //4031317
-	static final String DB_USR = "bad68"; //mph47
+	static final String DB_PWD = "258852bd"; // 4031317
+	static final String DB_USR = "bad68"; // mph47
 	static Scanner userIn;
 	static String query, username, password;
 	static SimpleDateFormat dateFormat;
@@ -193,8 +193,8 @@ public class MyAuction {
 				quitting();
 
 			case 'a':
-				Browsing.start(con,userIn);
-        Browsing.browsing();
+				Browsing.start(con, userIn);
+				Browsing.browsing();
 				break;
 			case 'b':
 				Searching.start(con, userIn);
@@ -222,7 +222,6 @@ public class MyAuction {
 		}
 
 	}
-	
 
 	public static void selling() {
 		System.out.println("Selling");
@@ -240,12 +239,5 @@ public class MyAuction {
 		}
 		System.exit(0);
 	}
-	
-	private static void productStats() {
-		
-	}
-	
-	private static void inDepthStats() {
-	
-	}
+
 }
