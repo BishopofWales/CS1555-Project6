@@ -6,8 +6,8 @@ import java.text.*;
 public class MyAuction {
 	// javac -classpath '.;.\ojdbc6.jar' MyAuction.java
 	static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-	static final String DB_PWD = "4031317";
-	static final String DB_USR = "mph47";
+	static final String DB_PWD = "258852bd"; //4031317
+	static final String DB_USR = "bad68"; //mph47
 	static Scanner userIn;
 	static String query, username, password;
 	static SimpleDateFormat dateFormat;
@@ -93,7 +93,8 @@ public class MyAuction {
 				quitting();
 
 			case 'a':
-				// registerCustomer();
+				RegisterCustomer.start(con, userIn);
+				RegisterCustomer.registerCustomer();
 				break;
 			case 'b':
 				// updateDate();
@@ -105,6 +106,8 @@ public class MyAuction {
 			case 'd':
 				// inDepthStats();
 				break;
+			case 'e':
+				quitting();
 			default:
 				System.out.println("Please select options (a-d) or (q) to quit");
 				break;
@@ -190,18 +193,20 @@ public class MyAuction {
 				quitting();
 
 			case 'a':
-				Browsing.start(con, userIn);
-				Browsing.browsing();
+				Browsing.start(con,userIn);
+        Browsing.browsing();
 				break;
 			case 'b':
 				Searching.start(con, userIn);
 				Searching.searching();
 				break;
 			case 'c':
-				auction();
+				Auction.start(con, userIn);
+				Auction.auction();
 				break;
 			case 'd':
-				bidding();
+				Bidding.start(con, userIn);
+				Bidding.bidding();
 				break;
 			case 'e':
 				selling();
@@ -217,14 +222,7 @@ public class MyAuction {
 		}
 
 	}
-
-	public static void auction() {
-		System.out.println("Auction");
-	}
-
-	public static void bidding() {
-		System.out.println("Bidding");
-	}
+	
 
 	public static void selling() {
 		System.out.println("Selling");
@@ -242,8 +240,12 @@ public class MyAuction {
 		}
 		System.exit(0);
 	}
-
-	public static boolean isNumeric(String str) {
-		return str.matches("-?\\d+(\\.\\d+)?"); // match a number with optional '-' and decimal.
+	
+	private static void productStats() {
+		
+	}
+	
+	private static void inDepthStats() {
+	
 	}
 }

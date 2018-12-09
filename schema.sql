@@ -34,10 +34,10 @@ create table Product (
     name varchar2(20),
     description varchar2(30),
     seller varchar2(10),
-    start_date date,
+    start_date date not null,
     min_price int,
-    number_of_days int,
-    status varchar2(15) not null,
+    number_of_days int not null,
+    status varchar2(15) not null check (status in ('under auction', 'sold', 'closed', 'withdrawn')),
     buyer varchar2(10),
     sell_date date,
     amount int,
@@ -75,10 +75,3 @@ create table BelongsTo (
 
 commit;
 
-/*
-select auction_id, name, description,amount from Product where amount is not null order by amount desc;
-select auction_id, name, description from Product order by name asc;
-
-select bidder,bid1.auction_id,bidsn,status,name from Product prod, BidLog bid1 where bid1.amount = (select Max(amount) from bidlog bid2 group by auction_id having bid2.auction_id = bid1.auction_id )and bid1.auction_id = prod.auction_id;
-
-select bidder,prod.auction_id,status,name,prod.amount from Product prod left outer join BidLog bid on prod.auction_id = bid.auction_id and prod.amount = bid.amount;
