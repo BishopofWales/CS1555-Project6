@@ -14,6 +14,33 @@ public class Browsing{
 		browsing();
 	}
     public static void browsing() {
+		System.out.println(
+					"----------------\n(a)List products by price\n(b)List products alphabetically\n(c)Browse products by category\n(d)Return to main customer menu");
+		String responseLine = userIn.nextLine();
+		if (responseLine.length() > 1) {
+			System.out.println("Please specify the letter for the option you would like");
+			browsing();
+		}
+		char responseLetter = responseLine.charAt(0);
+		switch (responseLetter) {
+			case 'd':
+				return;
+			case 'a':
+				prodsByPrice();
+				break;
+			case 'b':
+				prodsByAlpha();
+				break;
+			case 'c':
+				browsingByCat();
+				break;
+			default:
+				System.out.println("Please select options (a-c) or (d) to return");
+				browsing();
+				break;
+		}
+	}
+	public static void browsingByCat() {
 		// TO DO: add sort by price, add order alphabetically
 		try {
 			System.out.println("Here are the root categories, select a number to choose a category.");
@@ -60,19 +87,57 @@ public class Browsing{
 			System.out.println("Here are the products in " + category);
 			Statement stmt = con.createStatement();
 
-			String sql = "select auction_id, name, description from Product where auction_id in (SELECT AUCTION_ID from BelongsTo where category = '"
+			String sql = "select auction_id, name, description from Product where status = 'under auction' AND auction_id in (SELECT AUCTION_ID from BelongsTo where category = '"
 					+ category + "')";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				System.out.println("-----------------------");
 				System.out.println("ID: " + rs.getInt("auction_id"));
 				System.out.println("Name: " + rs.getString("name"));
 				System.out.println("Description: " + rs.getString("description"));
-				System.out.println("-----------------------");
+				
 			}
 		} catch (Exception e) {
 			System.out.println("Could not list products: " + e);
 		}
 
+	}
+	static void prodsByPrice(){
+		try{
+			Statement stmt = con.createStatement();
+			String sql = "select auction_id, name, description,amount from Product where amount is not null and status = 'under auction' order by amount desc";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				System.out.println("-----------------------");
+				System.out.println("ID: " + rs.getInt("auction_id"));
+				System.out.println("Name: " + rs.getString("name"));
+				System.out.println("Description: " + rs.getString("description"));
+				System.out.println("Price: " + rs.getInt("amount"));
+				
+			}
+		}
+		catch(Exception e){
+			System.out.println("Listing prods by price failed: " + e);
+		}
+		
+	}
+	static void prodsByAlpha(){
+		try{
+			Statement stmt = con.createStatement();
+			String sql = "select auction_id, name, description from Product where status = 'under auction' order by name asc";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				System.out.println("-----------------------");
+				System.out.println("ID: " + rs.getInt("auction_id"));
+				System.out.println("Name: " + rs.getString("name"));
+				System.out.println("Description: " + rs.getString("description"));
+				
+			}
+		}
+		catch(Exception e){
+			System.out.println("Listing prods by price failed: " + e);
+		}
+		
 	}
 	public static ArrayList<String> getSubCategories(String cat) {
 		ArrayList<String> categories = null;
