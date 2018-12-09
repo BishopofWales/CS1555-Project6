@@ -10,7 +10,6 @@ public class ProductStats {
 	public static void start(Connection rCon, Scanner rUserIn) {
 		userIn = rUserIn;
 		con = rCon;
-
 	}
 
 	static void productStats() {

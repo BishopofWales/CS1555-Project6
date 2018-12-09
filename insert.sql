@@ -51,3 +51,5 @@ select func_bidCount(12, 'tom') from Bidlog;
 select func_productCount(12, 'Guitars') from Product;
 
 select func_buyingAmount(12, 'tom') from Product;
+
+select * from product where REGEXP_LIKE(description,'.*good.*') and REGEXP_LIKE(description,'.*pretty.*')

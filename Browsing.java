@@ -3,19 +3,18 @@ import java.util.*;
 import java.sql.*;
 import java.text.*;
 
-
-public class Browsing{
+public class Browsing {
 	static Connection con = null;
 	static Scanner userIn;
 
-	public static void start(Connection rCon, Scanner rUserIn){
+	public static void start(Connection rCon, Scanner rUserIn) {
 		userIn = rUserIn;
 		con = rCon;
-		browsing();
 	}
-    public static void browsing() {
+
+	public static void browsing() {
 		System.out.println(
-					"----------------\n(a)List products by price\n(b)List products alphabetically\n(c)Browse products by category\n(d)Return to main customer menu");
+				"----------------\n(a)List products by price\n(b)List products alphabetically\n(c)Browse products by category\n(d)Return to main customer menu");
 		String responseLine = userIn.nextLine();
 		if (responseLine.length() > 1) {
 			System.out.println("Please specify the letter for the option you would like");
@@ -23,23 +22,24 @@ public class Browsing{
 		}
 		char responseLetter = responseLine.charAt(0);
 		switch (responseLetter) {
-			case 'd':
-				return;
-			case 'a':
-				prodsByPrice();
-				break;
-			case 'b':
-				prodsByAlpha();
-				break;
-			case 'c':
-				browsingByCat();
-				break;
-			default:
-				System.out.println("Please select options (a-c) or (d) to return");
-				browsing();
-				break;
+		case 'd':
+			return;
+		case 'a':
+			prodsByPrice();
+			break;
+		case 'b':
+			prodsByAlpha();
+			break;
+		case 'c':
+			browsingByCat();
+			break;
+		default:
+			System.out.println("Please select options (a-c) or (d) to return");
+			browsing();
+			break;
 		}
 	}
+
 	public static void browsingByCat() {
 		// TO DO: add sort by price, add order alphabetically
 		try {
@@ -55,6 +55,7 @@ public class Browsing{
 		// (b)), highest bid amount
 
 	}
+
 	public static void chooseSub(ArrayList<String> categories) {
 		System.out.println("Please choose a subcategory.");
 		displayCategories(categories);
@@ -82,6 +83,7 @@ public class Browsing{
 		}
 
 	}
+
 	static void listProds(String category) {
 		try {
 			System.out.println("Here are the products in " + category);
@@ -95,15 +97,16 @@ public class Browsing{
 				System.out.println("ID: " + rs.getInt("auction_id"));
 				System.out.println("Name: " + rs.getString("name"));
 				System.out.println("Description: " + rs.getString("description"));
-				
+
 			}
 		} catch (Exception e) {
 			System.out.println("Could not list products: " + e);
 		}
 
 	}
-	static void prodsByPrice(){
-		try{
+
+	static void prodsByPrice() {
+		try {
 			Statement stmt = con.createStatement();
 			String sql = "select auction_id, name, description,amount from Product where amount is not null and status = 'under auction' order by amount desc";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -113,16 +116,16 @@ public class Browsing{
 				System.out.println("Name: " + rs.getString("name"));
 				System.out.println("Description: " + rs.getString("description"));
 				System.out.println("Price: " + rs.getInt("amount"));
-				
+
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("Listing prods by price failed: " + e);
 		}
-		
+
 	}
-	static void prodsByAlpha(){
-		try{
+
+	static void prodsByAlpha() {
+		try {
 			Statement stmt = con.createStatement();
 			String sql = "select auction_id, name, description from Product where status = 'under auction' order by name asc";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -131,14 +134,14 @@ public class Browsing{
 				System.out.println("ID: " + rs.getInt("auction_id"));
 				System.out.println("Name: " + rs.getString("name"));
 				System.out.println("Description: " + rs.getString("description"));
-				
+
 			}
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			System.out.println("Listing prods by price failed: " + e);
 		}
-		
+
 	}
+
 	public static ArrayList<String> getSubCategories(String cat) {
 		ArrayList<String> categories = null;
 		try {
@@ -161,6 +164,7 @@ public class Browsing{
 		}
 		return categories;
 	}
+
 	public static void displayCategories(ArrayList<String> categories) {
 		int count = 0;
 		for (String category : categories) {
@@ -169,6 +173,7 @@ public class Browsing{
 			count++;
 		}
 	}
+
 	public static boolean isNumeric(String str) {
 		return str.matches("-?\\d+(\\.\\d+)?"); // match a number with optional '-' and decimal.
 	}
