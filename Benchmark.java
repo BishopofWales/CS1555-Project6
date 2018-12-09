@@ -3,13 +3,13 @@ import java.util.*;
 import java.sql.*;
 import java.text.*;
 
-public class Driver {
+public class Benchmark {
     static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
     static final String DB_PWD = "258852bd"; // 4031317
     static final String DB_USR = "bad68"; // mph47
-    static Scanner userIn;
     static Connection con = null;
-
+    static final int RPT_CNT = 100;
+    static Scanner userIn;
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.class.path"));
         userIn = new Scanner(System.in);
@@ -20,9 +20,7 @@ public class Driver {
             con = DriverManager.getConnection(DB_URL, DB_USR, DB_PWD);
         } catch (Exception e) {
             System.out.println("Did not connect to database." + e);
-        } finally {
-
-        }
+        } 
         MyAuction.start();
         testBrowsing();
         testSearching();
@@ -30,30 +28,26 @@ public class Driver {
         testRegisterCustomer();
         testAuction();
         testBidding();
-        
+        /*
 		try {
 			con.close();
 		} catch (Exception e) {
 			System.out.println("Could not close connection.");
 		}
-		System.exit(0);
-	
-
+        */
     }
 
     public static void testBrowsing() {
         Browsing.start(con, null);
-        System.out.println(
-                "Moving down the left side of the category hierarchy (ie. choosing the 0th subcategory each time).");
-        ArrayList<String> cats = Browsing.getSubCategories(null);
-        while (cats.size() > 0) {
-            for (String cat : cats) {
-                System.out.println(cat);
-            }
-            System.out.println("----------------------------");
-            cats = Browsing.getSubCategories(cats.get(0));
+        System.out.println("Moving down the left side of the category hierarchy 100 times");
 
+        ArrayList<String> cats = Browsing.getSubCategories(null);
+        for (int i = 0; i < 100; i++) {
+            while (cats.size() > 0) {
+                cats = Browsing.getSubCategories(cats.get(0));
+            }
         }
+
         System.out.println("Listing all products in alphabetical order.");
         Browsing.prodsByAlpha();
         System.out.println("Listing all products in order of price.");
@@ -61,10 +55,12 @@ public class Driver {
     }
 
     public static void testSearching() {
-        System.out.println("Searching for keywords 'good' and 'not'");
+        System.out.println("Searching for keywords 'good' and 'not' 100 times");
         Searching.start(con, null);
         String[] keywords = { "not", "good" };
-        Searching.executeSearch(keywords);
+        for (int i = 0; i < 100; i++) {
+            Searching.executeSearch(keywords);
+        }
     }
 
     public static void testProductStats() {
@@ -177,78 +173,62 @@ public class Driver {
 
     public static void testRegisterCustomer() {
         RegisterCustomer.start(con, userIn);
-
-        ArrayList<String> params = new ArrayList<String>();
-        String admin = "n";
-        // Register a customer
-        System.out.println("Testing registering a customer to the database");
-        params.add("testCust");
-        params.add("12345");
-        params.add("adam");
-        params.add("210 S Bouquet St");
-        params.add("something@gmail.com");
-
         ResultSet results = null;
+        
+        ArrayList<String> params = new ArrayList<String>();
+        // Register a customer
+        System.out.println("Testing registering a customer to the database 100 times.");
+        for(int i = 0; i < RPT_CNT; i++){ 
+            String iter = Integer.toString(i);
+            String admin = "n";
+            params.clear();
+            params.add("testCust"+iter);
+            params.add("12345"+iter);
+            params.add("adam"+iter);
+            params.add("210 S Bouquet St"+iter);
+            params.add(iter+"@gmail.com");
 
-        try {
-            results = RegisterCustomer.registerCustomerQuery(params, admin);
-        } catch (Exception e) {
-            System.out.println("Error in registerCustomerQuery: " + e.toString());
+
+            try {
+                results = RegisterCustomer.registerCustomerQuery(params, admin);
+            } catch (Exception e) {
+                System.out.println("Error in registerCustomerQuery: " + e.toString());
+            }
+
+            if (results == null) {
+                System.out.println("Error in registerCustomerQuery");
+            } else {
+                System.out.println("Customer registered successfully");
+            }
+
         }
-
-        if (results == null) {
-            System.out.println("Error in registerCustomerQuery");
-        } else {
-            System.out.println("Customer registered successfully");
-        }
-
-        // Attempt to register a customer with a conflicting login
-        System.out.println("Testing registering a customer to the database, but the login is already taken");
-        params.clear();
-        admin = "n";
-        results = null;
-
-        params.add("testCust");
-        params.add("123457");
-        params.add("charlie");
-        params.add("214 S Bouquet St");
-        params.add("test@gmail.com");
-
-        try {
-            results = RegisterCustomer.registerCustomerQuery(params, admin);
-        } catch (Exception e) {
-            System.out.println("Error in registerCustomerQuery: " + e.toString());
-        }
-
-        if (results == null) {
-            System.out.println("Error in registerCustomerQuery");
-        } else {
-            System.out.println("Customer registered successfully");
-        }
-
         // Register an admin
-        System.out.println("Tesint registering an admin to the database");
-        params.clear();
-        admin = "y";
-        results = null;
+        System.out.println("Testing registering an admin to the database 100 times");
+        for(int i = 0; i < RPT_CNT; i++){
+            String iter = Integer.toString(i);
+            params.clear();
+            String admin = "y";
+            results = null;
 
-        params.add("testAdmin");
-        params.add("123456");
-        params.add("bob");
-        params.add("212 S Bouquet St");
-        params.add("example@gmail.com");
+            params.add("admin" + iter);
+            params.add("123456" + iter);
+            params.add("bob" + iter);
+            params.add("212 S Bouquet St"+iter);
+            params.add(iter+"@gmail.com");
 
-        try {
-            results = RegisterCustomer.registerCustomerQuery(params, admin);
-        } catch (Exception e) {
-            System.out.println("Error in registerCustomerQuery: " + e.toString());
+            try {
+                results = RegisterCustomer.registerCustomerQuery(params, admin);
+            } catch (Exception e) {
+                System.out.println("Error in registerCustomerQuery: " + e.toString());
+            }
+
+            if (results == null) {
+                System.out.println("Error in registerCustomerQuery");
+            } else {
+                System.out.println("Admin registered successfully");
+            }
+
         }
-
-        if (results == null) {
-            System.out.println("Error in registerCustomerQuery");
-        } else {
-            System.out.println("Admin registered successfully");
-        }
-
+       
     }
 }
