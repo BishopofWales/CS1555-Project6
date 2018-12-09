@@ -6,8 +6,8 @@ import java.text.*;
 public class MyAuction {
 	// javac -classpath '.;.\ojdbc6.jar' MyAuction.java
 	static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-	static final String DB_PWD = "4031317";
-	static final String DB_USR = "mph47";
+	static final String DB_PWD = "258852bd"; //4031317
+	static final String DB_USR = "bad68"; //mph47
 	static Scanner userIn;
 	static String query, username, password;
 	static SimpleDateFormat dateFormat;
@@ -92,7 +92,8 @@ public class MyAuction {
 				quitting();
 
 			case 'a':
-				registerCustomer();
+				RegisterCustomer.start(con, userIn);
+				RegisterCustomer.registerCustomer();
 				break;
 			case 'b':
 				// updateDate();
@@ -184,10 +185,12 @@ public class MyAuction {
 				Searching.start(con,userIn);
 				break;
 			case 'c':
-				auction();
+				Auction.start(con, userIn);
+				Auction.auction();
 				break;
 			case 'd':
-				bidding();
+				Bidding.start(con, userIn);
+				Bidding.bidding();
 				break;
 			case 'e':
 				selling();
@@ -223,131 +226,6 @@ public class MyAuction {
 		}
 		System.exit(0);
 	}
-
-	
-
-	//Method for putting an item up for auction
-	public static void auction() throws Exception{
-		String name, description, category, user, numDays, minPrice;
-		ArrayList<String> params = new ArrayList<String>();
-		
-		//Get data from the user and add it to the parameter list
-		name = getUserInput("Enter the name of your product");
-		description = getUserInput("Enter a description for your product (optional)");
-		category = getUserInput("Enter the category of your product");
-		numDays = getUserInput("Enter the amount of days the auction will last");
-		minPrice = getUserInput("Enter the minimum price you will accept");
-		params.add(name);
-		params.add(description);
-		params.add(username);
-		params.add(category);
-		params.add(numDays);
-		params.add(minPrice);
-		
-		ResultSet resultSet = null;
-		
-		try {
-			//Get the results from the call of proc_putProduct
-			resultSet = auctionQuery(params);
-		} catch (Exception e) {
-			System.out.println("Error putting up auction: " + e.toString());
-		}
-
-		if (resultSet == null) {
-			System.out.println("Error starting auction");
-		} else {
-			System.out.println("\nAuction started successfully\n");
-		}
-	}
-	
-	//Call the query(String query, List<String> params) method with proc_putProduct
-	public static ResultSet auctionQuery(ArrayList<String> params) {
-		return query("Call proc_putProduct (?,?,?,?,?,?)", params);
-	}
-	
-	//Method for bidding on an auction
-	public static void bidding() throws Exception{
-		String amount, auctionID;
-		ArrayList<String> params = new ArrayList<String>();
-		
-		//Get data from the user and add it to the parameter list
-		auctionID = getUserInput("Enter the auction ID to bid on");
-		amount = getUserInput("Enter the amount you wish to bid");
-		params.add(auctionID);
-		params.add(username);
-		params.add(amount);
-		
-		ResultSet resultSet = null;
-		
-		try {
-			//Get the results from the insert on bidlog
-			resultSet = biddingQuery(params);
-		} catch (Exception e) {
-			System.out.println("Error bidding: " + e.toString());
-		}
-
-		if (resultSet == null) {
-			System.out.println("Error placing bid");
-		} else {
-			System.out.println("\nBid placed successfully\n");
-		}
-	}
-	
-	//Call the query(String query, List<String> params) method with an insert on bidlog
-	public static ResultSet biddingQuery(ArrayList<String> params) {
-		return query("Insert into Bidlog values (1,?,?,sysdate,?)", params);
-	}
-	
-	//Method for registering a new customer
-	public static void registerCustomer() throws Exception {
-		String name, login, password, address, email, admin;
-		ArrayList<String> params = new ArrayList<String>();
-		
-		//Get data from the user and add it to the parameter list
-		name = getUserInput("Enter a name");
-		login = getUserInput("Enter a login");
-		password = getUserInput("Enter a password");
-		address = getUserInput("Enter an address");
-		email = getUserInput("Enter an email");
-		admin = getUserInput("Is this user an administrator? y/n");
-		params.add(name);
-		params.add(login);
-		params.add(password);
-		params.add(address);
-		params.add(email);
-		
-		
-		ResultSet resultSet = null;
-		
-		try {
-			//Get the results from the insert on customer or administrator
-			resultSet = registerCustomerQuery(params, admin);
-		} catch (Exception e) {
-			System.out.println("Error registering customer: " + e.toString());
-		}
-				
-		if (resultSet == null) {
-			System.out.println("Error registering customer");
-		} else {
-			System.out.println("\nCustomer registered successfully\n");
-		}
-	}
-	
-	public static ResultSet registerCustomerQuery(ArrayList<String> params, String admin) {
-		//Check if the customer will be an administrator or not
-		if (admin.equalsIgnoreCase("y")) {
-			//Call the query(String query, List<String> params) method with an insert on administrator
-			return query("Insert into administrator values (?,?,?,?,?)", params);
-		} else if (admin.equalsIgnoreCase("n")) {	
-			//Call the query(String querym List<String> params) method with an insert on customer
-			return query("Insert into customer values (?,?,?,?,?)", params);	
-		} else {
-			System.out.println("Invalid response, please answer 'y' or 'n'");
-			return null;
-		}
-	}
-	
-	
 	
 	private static void productStats() {
 		
