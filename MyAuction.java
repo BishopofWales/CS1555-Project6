@@ -98,6 +98,7 @@ public class MyAuction {
 				break;
 			case 'c':
 				ProductStats.start(con, userIn);
+				ProductStats.productStats();
 				break;
 			case 'd':
 				// inDepthStats();

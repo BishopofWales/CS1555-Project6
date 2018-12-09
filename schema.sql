@@ -75,8 +75,10 @@ create table BelongsTo (
 
 commit;
 
-
+/*
 select auction_id, name, description,amount from Product where amount is not null order by amount desc;
 select auction_id, name, description from Product order by name asc;
 
-select bidder,auction_id,bidsn from BidLog bid1  where amount = (select Max(amount) from bidlog bid2 group by auction_id having bid2.auction_id = bid1.auction_id );
+select bidder,bid1.auction_id,bidsn,status,name from Product prod, BidLog bid1 where bid1.amount = (select Max(amount) from bidlog bid2 group by auction_id having bid2.auction_id = bid1.auction_id )and bid1.auction_id = prod.auction_id;
+
+select bidder,prod.auction_id,status,name,prod.amount from Product prod left outer join BidLog bid on prod.auction_id = bid.auction_id and prod.amount = bid.amount;
