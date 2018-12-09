@@ -8,7 +8,7 @@ public class Benchmark {
     static final String DB_PWD = "258852bd"; // 4031317
     static final String DB_USR = "bad68"; // mph47
     static Connection con = null;
-    static final int RPT_CNT = 100;
+    static final int RPT_CNT = 10;
     static Scanner userIn;
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.class.path"));
@@ -28,13 +28,13 @@ public class Benchmark {
         testRegisterCustomer();
         testAuction();
         testBidding();
-        /*
+        
 		try {
 			con.close();
 		} catch (Exception e) {
 			System.out.println("Could not close connection.");
 		}
-        */
+        
     }
 
     public static void testBrowsing() {
@@ -124,51 +124,32 @@ public class Benchmark {
         ArrayList<String> params = new ArrayList<String>();
 
         // Add an auction to the database
-        System.out.println("Testing adding an auction to the database");
-        params.add("Couch");
-        params.add("No holes!");
-        params.add("adam");
-        params.add("Furniture");
-        params.add("10");
-        params.add("600");
+        System.out.println("Testing adding an auction to the database 100 times.");
+        for(int i = 0; i < RPT_CNT;i++){
+            String iter = Integer.toString(i);
+            params.clear();
+            params.add("Couch" + iter);
+            params.add("No holes!");
+            params.add("adam");
+            params.add("Furniture");
+            params.add("10");
+            params.add("600");
 
-        ResultSet results = null;
+            ResultSet results = null;
 
-        try {
-            results = Auction.auctionQuery(params);
-        } catch (Exception e) {
-            System.out.println("Error in auctionQuery: " + e.toString());
+            try {
+                results = Auction.auctionQuery(params);
+            } catch (Exception e) {
+                System.out.println("Error in auctionQuery: " + e.toString());
+            }
+
+            if (results == null) {
+                System.out.println("Error in auctionQuery");
+            } else {
+                System.out.println("Auction created successfully");
+            }
         }
-
-        if (results == null) {
-            System.out.println("Error in auctionQuery");
-        } else {
-            System.out.println("Auction created successfully");
-        }
-
-        // Add an auction without a leaf node category
-        System.out.println("Testing adding an auction to the database, but the category is not a leaf node");
-        params.clear();
-        results = null;
-
-        params.add("LG G4");
-        params.add("Worst phone ever");
-        params.add("adam");
-        params.add("Electronics");
-        params.add("10");
-        params.add("600");
-
-        try {
-            results = Auction.auctionQuery(params);
-        } catch (Exception e) {
-            System.out.println("Error in auctionQuery: " + e.toString());
-        }
-
-        if (results == null) {
-            System.out.println("Error in auctionQuery");
-        } else {
-            System.out.println("Auction created successfully");
-        }
+       
     }
 
     public static void testRegisterCustomer() {
