@@ -47,7 +47,10 @@ select * from ourSysDATE;
 update ourSysDATE set c_date = sysdate + 5;
 insert into Bidlog values (1, 1, 'tonyboy', sysdate, 130);
 insert into Bidlog values (1, 1, 'tonyboy', sysdate, 150);
+call proc_putProduct('Dell laptop', 'Brand new in box', 'bad68', 'Computers', 10, 500);
+call proc_putProduct('Another laptop', 'theres a lot of these', 'bad68', 'Electronics', 10, 500);
+insert into Bidlog values (1, 6, 'tonyboy', sysdate, 550);
 commit; 
 
 select * from Product;
-select * from ourSysDATE;
+select * from BelongsTo;
