@@ -30,6 +30,7 @@ public class Driver {
         testRegisterCustomer();
         testAuction();
         testBidding();
+        testLogin();
         
 		try {
 			con.close();
@@ -249,6 +250,16 @@ public class Driver {
         } else {
             System.out.println("Admin registered successfully");
         }
+
+
+    }
+    public static void testLogin(){
+        
+        System.out.println("Testing login");
+        System.out.println("Verifying good user: bad68 password: hunter2");
+        System.out.println(LoginCredentials.validateUser("bad68","hunter2"));
+        System.out.println("Verifying bad user: good68 password: hunter2");
+        System.out.println(LoginCredentials.validateUser("good68","hunter2"));
 
     }
 }
