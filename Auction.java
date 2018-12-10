@@ -44,6 +44,12 @@ public class Auction {
 		} else {
 			System.out.println("\nAuction started successfully\n");
 		}
+		try{
+			resultSet.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close result" + e);
+		}
 	}
 	
 	public static ResultSet auctionQuery(ArrayList<String> params) {

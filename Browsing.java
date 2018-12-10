@@ -106,10 +106,10 @@ public class Browsing {
 	}
 
 	static void prodsByPrice() {
+		ResultSet rs = null;
 		try {
-			Statement stmt = con.createStatement();
 			String sql = "select auction_id, name, description,amount from Product where amount is not null and status = 'under auction' order by amount desc";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = MyAuction.query(sql);
 			while (rs.next()) {
 				System.out.println("-----------------------");
 				System.out.println("ID: " + rs.getInt("auction_id"));
@@ -120,15 +120,21 @@ public class Browsing {
 			}
 		} catch (Exception e) {
 			System.out.println("Listing prods by price failed: " + e);
+		
+		try{
+			rs.close();
 		}
+		catch(Exception f){
+			System.out.println("Could not close result" + f);
+		}}
 
 	}
 
 	static void prodsByAlpha() {
+		ResultSet rs = null;
 		try {
-			Statement stmt = con.createStatement();
 			String sql = "select auction_id, name, description from Product where status = 'under auction' order by name asc";
-			ResultSet rs = stmt.executeQuery(sql);
+			rs = MyAuction.query(sql);
 			while (rs.next()) {
 				System.out.println("-----------------------");
 				System.out.println("ID: " + rs.getInt("auction_id"));
@@ -139,6 +145,13 @@ public class Browsing {
 		} catch (Exception e) {
 			System.out.println("Listing prods by price failed: " + e);
 		}
+		try{
+			rs.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close result" + e);
+		}
+
 
 	}
 

@@ -11,7 +11,7 @@ public class MyAuction {
 	static Scanner userIn;
 	static String query, username, password;
 	static SimpleDateFormat dateFormat;
-
+	static Statement mainStatement = null;
 	static Connection con = null;
 
 	public static void main(String[] args) {
@@ -36,9 +36,12 @@ public class MyAuction {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			DriverManager.registerDriver(new oracle.jdbc.driver.OracleDriver());
 			con = DriverManager.getConnection(DB_URL, DB_USR, DB_PWD);
+			mainStatement = con.createStatement();
 		} catch (Exception e) {
 			System.out.println("Did not connect to database." + e);
 		}
+
+		
 	}
 
 	// Verify login credentials
@@ -114,7 +117,21 @@ public class MyAuction {
 			}
 		}
 	}
-
+	public static void RefreshStatement(){
+		try{
+			mainStatement.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close statement");
+		}
+		try{
+			mainStatement = con.createStatement();
+		}
+		catch(Exception e){
+			System.out.println("could not reopen statement");
+		}
+		
+	}
 	// Helpers
 	public static boolean goodString(String input) {
 		return input.matches("[a-zA-Z\\s]*$");
@@ -127,8 +144,7 @@ public class MyAuction {
 
 	public static ResultSet query(String query) {
 		try {
-			Statement s = con.createStatement();
-			return s.executeQuery(query);
+			return mainStatement.executeQuery(query);
 		} catch (SQLException e) {
 			System.out.println("ERROR RUNNING DATABASE QUERY: " + e.toString());
 			return null;

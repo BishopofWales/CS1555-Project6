@@ -38,6 +38,14 @@ public class Bidding {
 		} else {
 			System.out.println("\nBid placed successfully\n");
 		}
+		
+		try{
+			resultSet.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close result" + e);
+		}
+
 	}
 	
 	public static ResultSet biddingQuery(ArrayList<String> params) {

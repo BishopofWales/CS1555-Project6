@@ -46,6 +46,12 @@ public class RegisterCustomer {
 		} else {
 			System.out.println("\nCustomer registered successfully\n");
 		}
+		try{
+			resultSet.close();
+		}
+		catch(Exception e){
+			System.out.println("Could not close result" + e);
+		}
 	}
 	
 	public static ResultSet registerCustomerQuery(ArrayList<String> params, String admin) {

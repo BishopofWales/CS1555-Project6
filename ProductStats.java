@@ -94,6 +94,7 @@ public class ProductStats {
 				}
 
 			}
+			rs.close();
 		} catch (Exception e) {
 			System.out.println("Reading back search failed: " + e);
 		}

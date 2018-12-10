@@ -5,10 +5,10 @@ import java.text.*;
 
 public class Benchmark {
     static final String DB_URL = "jdbc:oracle:thin:@class3.cs.pitt.edu:1521:dbclass";
-    static final String DB_PWD = "258852bd"; // 4031317
-    static final String DB_USR = "bad68"; // mph47
+    static final String DB_PWD = "4031317";
+    static final String DB_USR =  "mph47";
     static Connection con = null;
-    static final int RPT_CNT = 100;
+    static final int RPT_CNT = 20;
     static Scanner userIn;
     public static void main(String[] args) {
         System.out.println(System.getProperty("java.class.path"));
@@ -39,15 +39,14 @@ public class Benchmark {
 
     public static void testBrowsing() {
         Browsing.start(con, null);
-        System.out.println("Moving down the left side of the category hierarchy 100 times");
+        System.out.println("Moving down the left side of the category hierarchy 20 times");
 
         ArrayList<String> cats = Browsing.getSubCategories(null);
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < RPT_CNT; i++) {
             while (cats.size() > 0) {
                 cats = Browsing.getSubCategories(cats.get(0));
             }
         }
-
         System.out.println("Listing all products in alphabetical order.");
         Browsing.prodsByAlpha();
         System.out.println("Listing all products in order of price.");
@@ -55,10 +54,10 @@ public class Benchmark {
     }
 
     public static void testSearching() {
-        System.out.println("Searching for keywords 'good' and 'not' 100 times");
+        System.out.println("Searching for keywords 'good' and 'not' 20 times");
         Searching.start(con, null);
         String[] keywords = { "not", "good" };
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < RPT_CNT; i++) {
             Searching.executeSearch(keywords);
         }
     }
@@ -77,25 +76,30 @@ public class Benchmark {
         ArrayList<String> params = new ArrayList<String>();
 
         // Bid on an auction
-        System.out.println("Testing bidding on an auction");
-        params.add("1");
-        params.add("testcust");
-        params.add("100000");
+        System.out.println("Testing bidding on an auction 20 times");
+        for(int i = 0; i < RPT_CNT; i++){
+            String iter = Integer.toString(i);
+            params.clear();
+            params.add("1");
+            params.add("testcust");
+            params.add("100000"+iter);
 
-        ResultSet results = null;
+            ResultSet results = null;
 
-        try {
-            results = Bidding.biddingQuery(params);
-        } catch (Exception e) {
-            System.out.println("Error in biddingQuery: " + e.toString());
+            try {
+                results = Bidding.biddingQuery(params);
+            } catch (Exception e) {
+                System.out.println("Error in biddingQuery: " + e.toString());
+            }
+
+            if (results == null) {
+                System.out.println("Error in biddingQuery");
+            } else {
+                System.out.println("Bid placed successfully");
+            }
+            
         }
-
-        if (results == null) {
-            System.out.println("Error in biddingQuery");
-        } else {
-            System.out.println("Bid placed successfully");
-        }
-
+      
         
     }
 
@@ -105,29 +109,22 @@ public class Benchmark {
         ArrayList<String> params = new ArrayList<String>();
 
         // Add an auction to the database
-        System.out.println("Testing adding an auction to the database 100 times.");
+        System.out.println("Testing adding an auction to the database 20 times.");
         for(int i = 0; i < RPT_CNT;i++){
             String iter = Integer.toString(i);
             params.clear();
-            params.add("Couch" + iter);
+            params.add("Couch");
             params.add("No holes!");
             params.add("testcust");
             params.add("Furniture");
             params.add("10");
             params.add("600");
 
-            ResultSet results = null;
-
             try {
-                results = Auction.auctionQuery(params);
+                ResultSet results = Auction.auctionQuery(params);
+                results.close();
             } catch (Exception e) {
                 System.out.println("Error in auctionQuery: " + e.toString());
-            }
-
-            if (results == null) {
-                System.out.println("Error in auctionQuery");
-            } else {
-                System.out.println("Auction created successfully");
             }
         }
        
@@ -139,7 +136,7 @@ public class Benchmark {
         
         ArrayList<String> params = new ArrayList<String>();
         // Register a customer
-        System.out.println("Testing registering a customer to the database 100 times.");
+        System.out.println("Testing registering a customer to the database 20 times.");
         for(int i = 0; i < RPT_CNT; i++){ 
             String iter = Integer.toString(i);
             String admin = "n";
@@ -162,10 +159,16 @@ public class Benchmark {
             } else {
                 System.out.println("Customer registered successfully");
             }
+            try{
+                results.close();
+            }
+            catch(Exception e){
+                System.out.println("Could not close");
+            }
 
         }
         // Register an admin
-        System.out.println("Testing registering an admin to the database 100 times");
+        System.out.println("Testing registering an admin to the database 20 times");
         for(int i = 0; i < RPT_CNT; i++){
             String iter = Integer.toString(i);
             params.clear();
@@ -188,6 +191,12 @@ public class Benchmark {
                 System.out.println("Error in registerCustomerQuery");
             } else {
                 System.out.println("Admin registered successfully");
+            }
+
+            try {
+                results.close();
+            } catch (Exception e) {
+                System.out.println("Error in auctionQuery: " + e.toString());
             }
 
         }
