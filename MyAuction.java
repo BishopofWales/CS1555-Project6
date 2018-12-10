@@ -18,16 +18,7 @@ public class MyAuction {
 		System.out.println(System.getProperty("java.class.path"));
 
 		start();
-		System.out.println("(u)ser or (a)dmin?");
-		String responseLine = userIn.nextLine();
-		char responseLetter = responseLine.charAt(0);
-		if (responseLetter == 'u') {
-			custMenu();
-		} else if (responseLetter == 'a') {
-			adminMenu();
-		} else {
-			quitting();
-		}
+		LoginCredentials.run();
 	}
 
 	public static void start() {
@@ -44,20 +35,6 @@ public class MyAuction {
 		
 	}
 
-	LoginCredentials.run();
-	
-	System.out.println("(u)ser or (a)dmin?");
-		String responseLine = userIn.nextLine();
-		char responseLetter = responseLine.charAt(0);
-		if(responseLetter == 'u'){
-			custMenu();
-		}
-		else if(responseLetter == 'a'){
-			adminMenu();
-		}
-		else{
-			System.exit(0);
-		}
 	////////////////////////////////////////////////////////////////////////////////
 	// ADMINISTRATOR MENU
 	//////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////////////
