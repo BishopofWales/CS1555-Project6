@@ -44,37 +44,20 @@ public class MyAuction {
 		
 	}
 
-	// Verify login credentials
-	public boolean login(int type) {
-		/*
-		 * type 2 = user (login)
-		 */
-		try {
-			System.out.println("PLEASE ENTER YOUR LOGIN CREDENTIALS");
-			username = getUserInput("Username");
-			password = getUserInput("Password");
-
-			ResultSet resultSet;
-			if (type == 2) {
-				resultSet = query("SELECT LOGIN, PASSWORD FROM USER");
-			} else {
-				resultSet = query("SELECT LOGIN, PASSWORD FROM ADMINISTRATOR");
-			}
-
-			while (resultSet.next()) {
-				if (username.equals(resultSet.getString(1)) && password.equals(resultSet.getString(2))) {
-					return true; // username and password combo is correct
-				}
-			}
-			return false;
+	LoginCredentials.run();
+	
+	System.out.println("(u)ser or (a)dmin?");
+		String responseLine = userIn.nextLine();
+		char responseLetter = responseLine.charAt(0);
+		if(responseLetter == 'u'){
+			custMenu();
 		}
-
-		catch (SQLException e) {
-			System.out.println("ERROR RUNNING QUERIES: " + e.toString());
+		else if(responseLetter == 'a'){
+			adminMenu();
 		}
-		return false;
-	}
-
+		else{
+			System.exit(0);
+		}
 	////////////////////////////////////////////////////////////////////////////////
 	// ADMINISTRATOR MENU
 	//////////////////////////////////////////////////////////////////////////////// ///////////////////////////////////////////////////////////
@@ -100,7 +83,7 @@ public class MyAuction {
 				RegisterCustomer.registerCustomer();
 				break;
 			case 'b':
-				// updateDate();
+				updateSystemTime.run();
 				break;
 			case 'c':
 				ProductStats.start(con, userIn);
@@ -228,7 +211,7 @@ public class MyAuction {
 				selling();
 				break;
 			case 'f':
-				suggestions();
+				productSuggestions.run();
 				break;
 			default:
 				System.out.println("Please select options (a-f) or (q) to quit");
